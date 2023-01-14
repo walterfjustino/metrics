@@ -1,6 +1,7 @@
-package com.metric.app.service;
+package com.metric.app.repository;
 
 import com.metric.app.model.Metric;
+import com.metric.app.service.MetricIterator;
 
 public interface MetricStore {
     /**
