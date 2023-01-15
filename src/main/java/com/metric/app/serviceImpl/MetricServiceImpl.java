@@ -2,6 +2,7 @@ package com.metric.app.serviceImpl;
 
 import com.metric.app.model.Metric;
 import com.metric.app.repository.MetricRepository;
+import com.metric.app.service.MetricIterator;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,11 +14,15 @@ public class MetricServiceImpl {
   @Autowired
   private MetricRepository repository;
 
-  void insert(Metric metric) throws Exception {
+  public void insert(Metric metric) throws Exception {
     this.repository.insert(metric);
   }
 
-  void removeAll(String name){
+  public void removeAll(String name){
     this.repository.removeAll(name);
+  }
+
+  public MetricIterator query(String name, long from, long to) {
+    return this.repository.query(name, from, to);
   }
 }

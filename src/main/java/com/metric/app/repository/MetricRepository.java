@@ -6,12 +6,13 @@ import com.metric.app.model.Storage;
 import com.metric.app.service.MetricIterator;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
-@Repository
+@Component
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class MetricRepository implements MetricStore {
 
