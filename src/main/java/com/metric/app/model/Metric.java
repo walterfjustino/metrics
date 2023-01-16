@@ -19,25 +19,4 @@ public class Metric {
     public long getTimestamp() {
         return timestamp;
     }
-
-//    @Override
-//    public boolean moveNext() {
-//
-//        return false;
-//    }
-//
-//    @Override
-//    public Metric current() {
-//         return null;
-//    }
-//
-//    @Override
-//    public void remove() {
-//
-//    }
-//
-//    @Override
-//    public void close() throws Exception {
-//
-//    }
 }

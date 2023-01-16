@@ -10,8 +10,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.stream.Collectors;
-
 @Repository
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class MetricRepository implements MetricStore {
