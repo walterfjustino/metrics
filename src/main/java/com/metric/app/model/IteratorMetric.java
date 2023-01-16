@@ -11,7 +11,6 @@ import java.util.Comparator;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Component
 public class IteratorMetric implements com.metric.app.service.MetricIterator {
 
   @Autowired

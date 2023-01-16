@@ -5,55 +5,59 @@ import com.metric.app.model.Metric;
 import com.metric.app.model.Storage;
 import com.metric.app.service.MetricIterator;
 import lombok.AllArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.stream.Collectors;
 
-@Component
+@Repository
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class MetricRepository implements MetricStore {
 
-//  private ConcurrentLinkedDeque<Metric> storage = new ConcurrentLinkedDeque<>();
+private static final Logger log = LogManager.getLogger(MetricRepository.class);
   @Autowired
   private Storage storage;
-
-  @Autowired
-  private IteratorMetric iteratorMetric;
 
 
   @Override
   public void insert(Metric metric) throws Exception {
+    log.info("starting insert: ");
     storage.add(metric);
+    log.info("Save metric: {}, {}", metric.getName(), metric.getTimestamp());
   }
 
   @Override
   public void removeAll(String name) {
+    log.info("starting removeAll: ");
     var elements = storage.parallelStream()
             .filter(element -> element.getName().equals(name))
             .toList();
     storage.removeAll(elements);
-
+    log.info("Removed metric: {}", name);
   }
-
   @Override
   public MetricIterator query(String name, long from, long to) {
-    storage.parallelStream()
-            .filter(metric -> metric.getName().equals(name) && metric.getTimestamp() >= from && metric.getTimestamp() < to)
-            .toList();
-    return mapMetricIntoMetricIterator(storage);
-  }
+    log.info("starting query: ");
+    var iteratorMetric = new IteratorMetric();
+    try {
+      var itera = storage.parallelStream().iterator();
+      while (itera.hasNext()) {
+        var metric =itera.next();
+        if (metric.getName().equals(name)){
+          iteratorMetric.setName(metric.getName());
+          if (metric.getTimestamp() >= from && metric.getTimestamp() < to)
+            iteratorMetric.setFrom(metric.getTimestamp());
+            iteratorMetric.setTo(metric.getTimestamp());
+          iteratorMetric.setFrom(metric.getTimestamp());
+        }
+      }
+      log.info("finished query: {}, {}, {}, {}", storage.size(), iteratorMetric.getName(), iteratorMetric.getFrom(), iteratorMetric.getTo());
 
-  private MetricIterator mapMetricIntoMetricIterator(Storage storage) {
-    storage.parallelStream()
-            .filter(metricName -> storage.contains(metricName.getName()))
-            .forEach(metric -> {
-              iteratorMetric.setName(metric.getName());
-              iteratorMetric.setFrom(metric.getTimestamp());
-              iteratorMetric.setTo(metric.getTimestamp());
-            });
+    } catch (Exception e) {
+      throw new RuntimeException(e.getMessage());
+    }
     return iteratorMetric;
   }
 }
