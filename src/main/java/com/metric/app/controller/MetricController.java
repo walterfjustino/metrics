@@ -4,7 +4,6 @@ import com.metric.app.model.Metric;
 import com.metric.app.serviceImpl.MetricServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
